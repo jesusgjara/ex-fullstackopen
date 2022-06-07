@@ -1,8 +1,13 @@
 const express = require('express')
 const app = express()
+const morgan = require('morgan')
 const PORT = 8000
 
 app.use(express.json())
+
+morgan.token('body', (req)=> JSON.stringify(req.body))
+
+app.use(morgan(':method :url :status :response-time ms :body'))
 
 let persons = [
     {
@@ -60,11 +65,11 @@ app.post('/api/persons', (req,res) => {
     
     if (!body.name) {
         return res.status(400).json({
-            error: "name missing"
+            error: "name is missing"
         })
     } else if (!body.number) {
         return res.status(400).json({
-            error: "number missing"
+            error: "number is missing"
         })
     }
 
